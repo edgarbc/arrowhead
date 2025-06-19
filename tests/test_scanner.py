@@ -4,7 +4,7 @@ Tests for the VaultScanner functionality.
 
 import pytest
 from pathlib import Path
-from src.arrowhead.scanner import VaultScanner, ScanResult
+from arrowhead.scanner import VaultScanner, ScanResult
 
 class TestVaultScanner:
     """Test cases for VaultScanner."""
