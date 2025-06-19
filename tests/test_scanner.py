@@ -118,3 +118,12 @@ class TestVaultScanner:
         
         # Should pass now
         assert scanner.validate_vault() is True
+
+
+    def test_scan_with_example_vault(self, example_vault_path):
+        """Test scanning an example vault."""
+        scanner = VaultScanner(example_vault_path)
+        result = scanner.scan()
+        
+        assert len(result.markdown_files) == 1
+        assert "2024-12-02.md" in str(result.markdown_files[0])
