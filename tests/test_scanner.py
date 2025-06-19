@@ -6,6 +6,11 @@ import pytest
 from pathlib import Path
 from arrowhead.scanner import VaultScanner, ScanResult
 
+@pytest.fixture
+def example_vault_path():
+    """Return the path to the example vault."""
+    return Path(__file__).parent.parent / "examples" / "journal"
+
 class TestVaultScanner:
     """Test cases for VaultScanner."""
     
@@ -16,6 +21,13 @@ class TestVaultScanner:
         assert '.obsidian' in scanner.exclude_dirs
         assert '.git' in scanner.exclude_dirs
     
+    def test_scanner_initialization_with_example_vault(self, example_vault_path):
+        """Test scanner initialization with example vault."""
+        scanner = VaultScanner(example_vault_path)
+        assert scanner.vault_path == example_vault_path.resolve()
+        assert '.obsidian' in scanner.exclude_dirs
+        assert '.git' in scanner.exclude_dirs
+
     def test_scanner_invalid_path(self):
         """Test scanner initialization with invalid path."""
         with pytest.raises(ValueError, match="does not exist"):
