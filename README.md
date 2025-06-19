@@ -22,9 +22,9 @@ arrowhead/
 │   ├── test_summarizer.py
 │   └── test_writer.py
 ├── examples/                # Sample vault and usage examples
-│   └── sample_vault/
-│       ├── day1.md
-│       └── day2.md
+│   └── journal/
+│       ├── 2024-12-02.md   # Example journal entry markdown file
+│       └── 2024-12-03.md
 ├── Summaries/               # Output folder for generated summaries
 ├── docs/                    # Additional documentation
 │   └── usage.md             # Usage guide and FAQs
