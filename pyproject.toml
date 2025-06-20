@@ -15,6 +15,10 @@ where = ["src"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
+addopts = "--strict-markers"
+markers = [
+    "integration: mark test as integration test"
+]
 
 [dependency-groups]
 dev = [
