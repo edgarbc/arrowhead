@@ -21,7 +21,7 @@ Arrowhead is a CLI tool that automates the repetitive task of creating weekly su
 - **🤖 Local LLM Integration** - Uses Ollama for cost-effective, privacy-focused summarization
 - **📦 Intelligent Batching** - Groups entries efficiently to respect token limits
 - **📝 Structured Output** - Generates well-formatted summaries with metadata
-- **⚡ Fast & Lightweight** - Built with UV for rapid development and deployment
+- **💻 Chat with your notes** - RAG system to chat with your notes.
 
 ## 🚀 Quick Start
 
