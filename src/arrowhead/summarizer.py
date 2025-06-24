@@ -11,6 +11,7 @@ from dataclasses import dataclass
 from datetime import datetime
 import time
 import httpx
+import openai
 
 from .parser import JournalEntry
 
@@ -246,7 +247,6 @@ Please provide a structured summary that captures the key points, themes, and in
             }
             
             # Make the API call
-
             with httpx.Client(timeout=60.0) as client:
                 response = client.post(
                     f"{self.ollama_host}/api/generate",
@@ -273,7 +273,7 @@ Please provide a structured summary that captures the key points, themes, and in
             Response content from OpenAI
         """
         try:
-            import openai
+
             
             # Set API key from environment
             import os
