@@ -21,7 +21,8 @@ Arrowhead is a CLI tool that automates the repetitive task of creating weekly su
 - **🤖 Local LLM Integration** - Uses Ollama for cost-effective, privacy-focused summarization
 - **📦 Intelligent Batching** - Groups entries efficiently to respect token limits
 - **📝 Structured Output** - Generates well-formatted summaries with metadata
-- **💻 Chat with your notes** - RAG system to chat with your notes.
+- **💻 Chat with your notes** - Chat with your summaries using retrieval-augmented generation.
+- **⚡ Fast & Lightweight** - Built with UV for rapid development and deployment
 
 ## 🚀 Quick Start
 
@@ -43,6 +44,9 @@ uv sync
 
 # Install in development mode
 uv pip install -e .
+
+# Run tests
+uv run pytest
 ```
 
 ### Basic Usage
@@ -59,9 +63,16 @@ arrowhead summarize /path/to/vault --hashtag work \
 arrowhead summarize /path/to/vault --hashtag project \
   --model llama2:7b
 
-# Dry run to see what would be processed
-arrowhead summarize /path/to/vault --hashtag meeting --dry-run
+# Chat with your summaries using RAG
+arrowhead chat --summaries Summaries/
+
+# Scan vault to see what would be processed
+arrowhead scan /path/to/vault --hashtag meeting
+
 ```
+
+
+
 
 ## 📦 Project Structure
 
@@ -72,14 +83,15 @@ arrowhead/
 ├── src/
 ├── src/
 │   └── arrowhead/
-│       ├── __init__.py      # Core package
+│       ├── __init__.py      # Package initialization
 │       ├── cli.py           # Entry point and CLI definitions
 │       ├── scanner.py       # Vault scanning and file discovery
 │       ├── parser.py        # Markdown parsing and hashtag filtering
 │       ├── batcher.py       # Entry batching logic
 │       ├── summarizer.py    # LLM prompt construction and API calls
-│       └── writer.py        # Summary aggregation and note writing
-│       └── utils.py         # Helper functions (date parsing, logging)
+│       ├── writer.py        # Summary aggregation and note writing
+│       ├── utils.py         # Helper functions (date parsing, logging)
+│       └── rag.py           # RAG system for chatting with summaries
 ├── tests/                   # Unit and integration tests
 │   ├── test_scanner.py
 │   ├── test_parser.py
@@ -96,3 +108,7 @@ arrowhead/
 └── .gitignore               # Ignore venv, __pycache__, etc.
 
 ```
+
+---
+
+**Made with ❤️ for the Obsidian community**
