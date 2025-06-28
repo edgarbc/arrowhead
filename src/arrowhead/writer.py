@@ -4,7 +4,7 @@ Summary aggregation and note writing functionality.
 
 import logging
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from dataclasses import dataclass
 from datetime import datetime
 import json
