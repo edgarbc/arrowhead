@@ -23,6 +23,7 @@ Arrowhead is a CLI tool that automates the repetitive task of creating weekly su
 - **📝 Structured Output** - Generates well-formatted summaries with metadata
 - **💻 Chat with your notes** - Chat with your summaries using retrieval-augmented generation.
 - **⚡ Fast & Lightweight** - Built with UV for rapid development and deployment
+- **🤖 Agentic workflow** - Agentic workflow for reading and writing summaries using an Obsidian MCP server.
 
 ## 🚀 Quick Start
 
