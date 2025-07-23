@@ -44,10 +44,31 @@ uv sync
 
 # Install in development mode
 uv pip install -e .
-
-# Run tests
-uv run pytest
 ```
+
+### Testing
+The project both unit tests and integration tests. Integration tests require a local Ollama instance running.
+
+```bash
+# Run all unit tests (no external dependencies)
+uv run pytest tests/ -v
+
+# Run only unit tests (excludes integration tests)
+uv run pytest tests/ -v -m "not integration"
+
+# Run integration tests (requires Ollama)
+uv run pytest tests/ -v --run-integration
+
+# Run all tests including integration tests
+uv run pytest tests/ -v --run-integration
+
+# Run a specific test file
+uv run pytest tests/test_scanner.py -v
+
+# Run integration tests with specific model
+uv run pytest tests/test_summarizer_integration.py -v --run-integration
+```
+
 
 ### Basic Usage
 
