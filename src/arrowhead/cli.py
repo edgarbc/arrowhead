@@ -131,8 +131,36 @@ def chat(
     ),
 ):
     """Chat with your summaries using RAG."""
-    # Implementation here
-    pass
+    try:
+        console.print(f"Starting chat with model {model} and summaries in {summaries_dir}")
+        
+        if summaries_dir is None:
+            console.print("[red]Error: Please specify --summaries directory")
+            raise typer.Exit(1)
+        
+        # setup RAG
+        rag = SummaryRAG(summaries_dir, model)
+        
+        # chat loop
+        console.print("[green]💬 Chat with your summaries (type 'quit' to exit)[/green]")
+        
+        while True:
+            try:
+                message = console.input("[cyan]You: ")
+                if message.lower() in ['quit', 'exit', 'q']:
+                    break
+                
+                response = rag.chat(message)
+                console.print(f"[green]Assistant: {response}")
+                
+            except KeyboardInterrupt:
+                break
+            except Exception as e:
+                console.print(f"[red]Error: {e}")
+                
+    except Exception as e:
+        console.print(f"[red]❌ Error: {e}")
+        raise typer.Exit(1)
 
 @app.command()
 def scan(
@@ -151,8 +179,37 @@ def scan(
     ),
 ):
     """Scan vault and show available entries (useful for testing)."""
-    # Implementation here
-    pass
+    try:
+        # Scan vault
+        scanner = VaultScanner(vault_path)
+        scan_result = scanner.scan()
+        
+        console.print(f"[blue]�� Vault: {vault_path}")
+        console.print(f"[blue]📄 Found {len(scan_result.markdown_files)} markdown files")
+        
+        if hashtag:
+            # Parse and filter by hashtag
+            parser = EntryParser()
+            entries = parser.parse_files(scan_result.markdown_files, hashtag)
+            
+            console.print(f"[green]✅ Found {len(entries)} entries with #{hashtag}")
+            
+            for entry in entries[:10]:  # Show first 10
+                console.print(f"  📝 {entry.file_path.name} ({entry.date})")
+            
+            if len(entries) > 10:
+                console.print(f"  ... and {len(entries) - 10} more")
+        else:
+            # Show all files
+            for file_path in scan_result.markdown_files[:20]:
+                console.print(f"  📄 {file_path.relative_to(vault_path)}")
+            
+            if len(scan_result.markdown_files) > 20:
+                console.print(f"  ... and {len(scan_result.markdown_files) - 20} more")
+                
+    except Exception as e:
+        console.print(f"[red]❌ Error: {e}")
+        raise typer.Exit(1)
 
 if __name__ == "__main__":
     app()
