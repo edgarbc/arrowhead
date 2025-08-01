@@ -32,11 +32,19 @@ class TestCLI:
         """Create a mock vault directory."""
         vault = tmp_path / "test_vault"
         vault.mkdir()
+
+        # create journal directory
+        journal_dir = vault / "journal"
+        journal_dir.mkdir()
+
+        # create summaries directory
+        summaries_dir = vault / "summaries"
+        summaries_dir.mkdir()
         
-        # Create some test markdown files
-        (vault / "journal" / "2024-01-15.md").write_text("# Meeting Notes\nHad a #meeting with the team.")
-        (vault / "journal" / "2024-01-16.md").write_text("# Follow-up\nFollowed up on #meeting action items.")
-        (vault / "journal" / "2024-01-17.md").write_text("# Other Notes\nSome other notes without hashtags.")
+        # create test markdown files
+        (journal_dir / "2024-01-15.md").write_text("# Meeting Notes\nHad a #meeting with the team.")
+        (journal_dir / "2024-01-16.md").write_text("# Follow-up\nFollowed up on #meeting action items.")
+        (journal_dir / "2024-01-17.md").write_text("# Other Notes\nSome other notes without hashtags.")
         
         return vault
     
