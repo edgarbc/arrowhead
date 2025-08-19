@@ -2,20 +2,21 @@
 CLI entry point for the Arrowhead Obsidian Weekly Hashtag Summarizer.
 """
 
-import typer
-from pathlib import Path
-from typing import Optional
+import typer # for CLI
+from pathlib import Path # for file paths
+from typing import Optional # for type hints
 from rich.console import Console
-from rich.progress import Progress, SpinnerColumn, TextColumn
-from rich.panel import Panel
+from rich.progress import Progress # for progress bars
+from rich.panel import Panel # for panels
 
-from .scanner import VaultScanner
-from .parser import EntryParser
-from .batcher import EntryBatcher
-from .summarizer import LLMSummarizer
-from .writer import SummaryWriter
-from .rag import SummaryRAG
-from .utils import setup_logging, parse_date_range
+# local imports
+from .scanner import VaultScanner # for scanning the vault
+from .parser import EntryParser # for parsing the entries
+from .batcher import EntryBatcher # for batching the entries
+from .summarizer import LLMSummarizer # for summarizing the entries
+from .writer import SummaryWriter # for writing the summaries
+from .rag import SummaryRAG # for RAG
+from .utils import setup_logging, parse_date_range # for logging and date parsing
 
 app = typer.Typer(
     name="arrowhead",
@@ -167,7 +168,6 @@ def scan(
     vault_path: Path = typer.Argument(
         ...,
         help="Path to your Obsidian vault directory",
-        exists=True,
         dir_okay=True,
         file_okay=False,
     ),
@@ -180,6 +180,15 @@ def scan(
 ):
     """Scan vault and show available entries (useful for testing)."""
     try:
+        # manual validation
+        if not vault_path.exists():
+            console.print(f"[red]❌ Error: Vault path does not exist: {vault_path}")
+            raise typer.Exit(1)
+        
+        if not vault_path.is_dir():
+            console.print(f"[red]❌ Error: Vault path is not a directory: {vault_path}")
+            raise typer.Exit(1)
+
         # Scan vault
         scanner = VaultScanner(vault_path)
         scan_result = scanner.scan()
