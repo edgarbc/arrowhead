@@ -5,6 +5,7 @@ Integration tests for LLMSummarizer with real Ollama calls.
 import pytest
 from pathlib import Path
 from datetime import datetime
+from pendulum import DateTime
 from arrowhead.summarizer import LLMSummarizer
 from arrowhead.parser import JournalEntry
 
@@ -55,7 +56,7 @@ class TestLLMSummarizerIntegration:
                 file_path=Path("test1.md"),
                 title="Meeting Notes",
                 content="Had a #meeting with the team about Q1 planning.",
-                date=datetime(2024, 1, 15),
+                date=DateTime(2024, 1, 15),
                 hashtags={"meeting"},
                 frontmatter={},
                 raw_content=""
@@ -64,7 +65,7 @@ class TestLLMSummarizerIntegration:
                 file_path=Path("test2.md"),
                 title="Follow-up",
                 content="Followed up on #meeting action items.",
-                date=datetime(2024, 1, 16),
+                date=DateTime(2024, 1, 16),
                 hashtags={"meeting"},
                 frontmatter={},
                 raw_content=""
@@ -81,8 +82,8 @@ class TestLLMSummarizerIntegration:
         response = summarizer.summarize_batch(
             entries=entries,
             hashtag="meeting",
-            start_date=datetime(2024, 1, 15),
-            end_date=datetime(2024, 1, 16)
+            start_date=DateTime(2024, 1, 15),
+            end_date=DateTime(2024, 1, 16)
         )
         
         # Validate response
