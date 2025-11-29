@@ -13,7 +13,7 @@ Usage:
     python demo/run_summary_demo.py
 
 Requirements:
-    pip install nltk networkx
+    pip install nltk networkx numpy
 
 Optional (for enhanced summarization):
     pip install sumy
@@ -22,6 +22,8 @@ Optional (for enhanced summarization):
 import os
 import sys
 from pathlib import Path
+
+import numpy as np
 
 # Add the src directory to the path for imports
 src_path = Path(__file__).parent.parent / "src"
@@ -141,9 +143,7 @@ def textrank_summarize(text: str, num_sentences: int = 5) -> str:
                     )
         
         # Create graph and run PageRank
-        graph = nx.from_numpy_array(
-            __import__("numpy").array(similarity_matrix)
-        )
+        graph = nx.from_numpy_array(np.array(similarity_matrix))
         scores = nx.pagerank(graph)
         
         # Rank sentences by score

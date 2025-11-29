@@ -15,13 +15,42 @@ Or directly:
 
 import subprocess
 import sys
+from contextlib import contextmanager
 from pathlib import Path
+
+import pytest
 
 
 # Path to the demo directory
 DEMO_DIR = Path(__file__).parent.parent / "demo"
 DEMO_SCRIPT = DEMO_DIR / "run_summary_demo.py"
 SAMPLE_NOTE = DEMO_DIR / "sample_note.md"
+
+
+@contextmanager
+def demo_module_path():
+    """Context manager for temporarily adding demo directory to sys.path."""
+    sys.path.insert(0, str(DEMO_DIR))
+    try:
+        yield
+    finally:
+        sys.path.remove(str(DEMO_DIR))
+
+
+@pytest.fixture
+def demo_imports():
+    """Fixture to import demo module functions."""
+    with demo_module_path():
+        from run_summary_demo import (
+            read_sample_note,
+            textrank_summarize,
+            fallback_summarize
+        )
+        yield {
+            "read_sample_note": read_sample_note,
+            "textrank_summarize": textrank_summarize,
+            "fallback_summarize": fallback_summarize
+        }
 
 
 class TestSmokeTest:
@@ -83,50 +112,38 @@ class TestSmokeTest:
             "Output should indicate successful completion"
         )
     
-    def test_summarizer_module_imports(self):
+    def test_summarizer_module_imports(self, demo_imports):
         """Test that the summarizer module can be imported."""
-        # Add demo directory to path temporarily
-        sys.path.insert(0, str(DEMO_DIR))
-        try:
-            from run_summary_demo import (
-                read_sample_note,
-                textrank_summarize,
-                fallback_summarize
-            )
-            
-            # Test reading the sample note
-            content = read_sample_note()
-            assert len(content) > 0, "Should read non-empty content"
-            
-            # Test summarization functions
-            summary = textrank_summarize(content, num_sentences=3)
-            assert len(summary) > 0, "TextRank summary should not be empty"
-            
-            fallback = fallback_summarize(content, num_sentences=3)
-            assert len(fallback) > 0, "Fallback summary should not be empty"
-            
-        finally:
-            sys.path.remove(str(DEMO_DIR))
+        read_sample_note = demo_imports["read_sample_note"]
+        textrank_summarize = demo_imports["textrank_summarize"]
+        fallback_summarize = demo_imports["fallback_summarize"]
+        
+        # Test reading the sample note
+        content = read_sample_note()
+        assert len(content) > 0, "Should read non-empty content"
+        
+        # Test summarization functions
+        summary = textrank_summarize(content, num_sentences=3)
+        assert len(summary) > 0, "TextRank summary should not be empty"
+        
+        fallback = fallback_summarize(content, num_sentences=3)
+        assert len(fallback) > 0, "Fallback summary should not be empty"
     
-    def test_summarizer_deterministic(self):
+    def test_summarizer_deterministic(self, demo_imports):
         """Test that the summarizer produces consistent results."""
-        sys.path.insert(0, str(DEMO_DIR))
-        try:
-            from run_summary_demo import read_sample_note, textrank_summarize
-            
-            content = read_sample_note()
-            
-            # Run summarization twice
-            summary1 = textrank_summarize(content, num_sentences=3)
-            summary2 = textrank_summarize(content, num_sentences=3)
-            
-            # Results should be identical (deterministic)
-            assert summary1 == summary2, (
-                "Summarizer should produce deterministic results"
-            )
-            
-        finally:
-            sys.path.remove(str(DEMO_DIR))
+        read_sample_note = demo_imports["read_sample_note"]
+        textrank_summarize = demo_imports["textrank_summarize"]
+        
+        content = read_sample_note()
+        
+        # Run summarization twice
+        summary1 = textrank_summarize(content, num_sentences=3)
+        summary2 = textrank_summarize(content, num_sentences=3)
+        
+        # Results should be identical (deterministic)
+        assert summary1 == summary2, (
+            "Summarizer should produce deterministic results"
+        )
 
 
 def test_smoke():
