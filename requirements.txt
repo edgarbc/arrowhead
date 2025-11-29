@@ -1,0 +1,40 @@
+# Arrowhead - Dependencies for Demo and Smoke Tests
+#
+# Core dependencies for the demo summarizer (deterministic, offline)
+numpy>=1.20.0
+nltk>=3.8.0
+networkx>=2.6.0
+
+# Optional: Enhanced summarization with sumy
+# sumy provides additional summarization algorithms (LexRank, LSA, etc.)
+# Uncomment if you want to experiment with other algorithms:
+# sumy>=0.11.0
+
+# Testing dependencies
+pytest>=7.0.0
+
+# -----------------------------------------------------------------------------
+# NLTK Data Setup (required for sentence tokenization)
+# -----------------------------------------------------------------------------
+# After installing dependencies, download required NLTK data:
+#
+#   python -c "import nltk; nltk.download('punkt'); nltk.download('punkt_tab')"
+#
+# This is handled automatically in CI via the workflow file.
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------
+# Production Dependencies (for LLM integration)
+# -----------------------------------------------------------------------------
+# The following are already in pyproject.toml and installed via `uv sync`:
+# - httpx: For Ollama API calls
+# - openai: For OpenAI API calls
+# - typer: For CLI
+# - rich: For pretty output
+# - pendulum: For date handling
+#
+# To install all production dependencies:
+#   pip install -e .
+# Or with uv:
+#   uv sync
+# -----------------------------------------------------------------------------
